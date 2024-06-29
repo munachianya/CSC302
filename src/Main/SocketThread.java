@@ -430,11 +430,12 @@ public class SocketThread implements Runnable {
                             st.setString(4, extension);
                             st.executeUpdate();
                         }
+                        
                         LocalDateTime Time = LocalDateTime.now();
                         DateTimeFormatter formatt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                         String DateTime = Time.format(formatt);
-                        dos.writeUTF("CMD_FILESENT" + MessageID + fname + DateTime);
-                        
+                        String CMD_FILESENT_MSG = "CMD_FILESENT " + MessageID + " " + fname + " " + DateTime;
+
                         serverform.appendMessage("CMD_SEND_FILE_XD Host: " + send_sender);
 
                         Socket s = serverform.getClientList(send_receiver);
@@ -444,14 +445,15 @@ public class SocketThread implements Runnable {
                             DataOutputStream dosS = new DataOutputStream(s.getOutputStream());
                             String format = "CMD_FILE_XD " + send_sender + " " + send_receiver + " " + send_filename + " " + MessageID;
                             dosS.writeUTF(format);
+                            dos.writeUTF(CMD_FILESENT_MSG);
                         } else {
                             // Receiver is offline
                             System.out.println("User is offline");
                             serverform.appendMessage("Client was not found '" + send_receiver + "'");
-                            // 
-                            //dos.writeUTF("CMD_SENDFILEERROR Client '" + send_receiver + "' was not found in the list, make sure it is on the online list.!");
+                           // dos.writeUTF("CMD_SENTFILEOFFLINE");
+                            dos.writeUTF(CMD_FILESENT_MSG);
                         }
-                        
+
                     } catch (Exception e) {
                         System.err.println("Error in CMD_SEND_FILE_XD: " + e.getMessage());
                         e.printStackTrace();

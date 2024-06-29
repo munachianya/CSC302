@@ -165,7 +165,7 @@ public class ClientThread implements Runnable {
                         time = token.nextToken();
                         String filename = token.nextToken();
                         String MessageID = token.nextToken();
-                        files = new files_items(filename, MessageID, date + time);
+                        files = new files_items(filename, MessageID, date +" "+ time);
                         clientFrame.appendRight(files);
                         break;
                     case "CMD_FETCHFILE":
@@ -173,7 +173,7 @@ public class ClientThread implements Runnable {
                         time = token.nextToken();
                         filename = token.nextToken();
                         MessageID = token.nextToken();
-                        files = new files_items(filename, MessageID, date + time);
+                        files = new files_items(filename, MessageID, date +" "+ time);
                         clientFrame.appendLeft(files);
                         break;
                     case "CMD_FETCHMYVOICENOTE":
@@ -233,13 +233,6 @@ public class ClientThread implements Runnable {
                                 System.out.println("[CMD_FILE_XD]: " + e.getMessage());
                             }
                         }
-                        break;
-                    case "CMD_FILESENT":
-                        MessageID = token.nextToken();
-                        fname = token.nextToken();
-                        time = token.nextToken();
-                        files = new files_items(fname, MessageID, time);
-                        clientFrame.appendRight(files);
                         break;
                     default:
 

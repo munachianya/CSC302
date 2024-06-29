@@ -4,6 +4,7 @@
  */
 package Main;
 
+import components.files_items;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -30,7 +31,7 @@ public class Attachment extends javax.swing.JFrame {
     String receiver;
     Client ClientFrame;
     Server server;
-
+    files_items files;
     /**
      * Creates new form Attachment1
      */
@@ -130,6 +131,16 @@ public class Attachment extends javax.swing.JFrame {
                             JOptionPane.showMessageDialog(Attachment.this, rMsg, "Error", JOptionPane.ERROR_MESSAGE);
                             dispose();
                             break;
+                        case "CMD_FILESENT":
+                            JOptionPane.showMessageDialog(Attachment.this, "File has been sent");
+                            form.setVisible(false);
+                            String MessageID = st.nextToken();
+                            String fname = st.nextToken();
+                            String Date = st.nextToken();
+                            String Time = st.nextToken();
+                            files = new files_items(fname, MessageID, Date+" "+Time);
+                            ClientFrame.appendRight(files);
+                            break;
                     }
                 }
             } catch (IOException e) {
@@ -171,7 +182,6 @@ public class Attachment extends javax.swing.JFrame {
     protected void closeThis() {
         dispose();
     }
-
 
     public String getThisFilename(String path) {
         File p = new File(path);
@@ -351,7 +361,7 @@ public class Attachment extends javax.swing.JFrame {
                 String filename = getThisFilenameWithoutExt(file);
                 String fname = getThisFilename(file);
                 String extension = getFileExtension(fname);
-                String format = "CMD_SEND_FILE_XD " + myusername + " " + sendTo + " " + fname + " " + filename + " " + extension+ " " + file ;
+                String format = "CMD_SEND_FILE_XD " + myusername + " " + sendTo + " " + fname + " " + filename + " " + extension + " " + file;
                 dos.writeUTF(format);
                 System.out.println(format);
                 updateBtn("Sending...");
